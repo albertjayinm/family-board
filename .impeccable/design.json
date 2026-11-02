@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T00:00:00.000Z",
+  "title": "Design System: familyboard",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Garden Green", "canonical": "#245c46", "tonalRamp": ["#e3f0e5", "#5f8c56", "#245c46"] },
+      "leaf": { "role": "secondary", "displayName": "Leaf Green", "canonical": "#5f8c56", "tonalRamp": ["#e3f0e5", "#a9c97e", "#5f8c56"] },
+      "fruit": { "role": "tertiary", "displayName": "Family Fruit", "canonical": "#bb4f3d", "tonalRamp": ["#fae9e4", "#c65a49", "#bb4f3d"] },
+      "harvest": { "role": "tertiary", "displayName": "Harvest Gold", "canonical": "#a47716", "tonalRamp": ["#f8f0d8", "#d9b34c", "#a47716"] },
+      "sky": { "role": "tertiary", "displayName": "Clear Sky", "canonical": "#376d83", "tonalRamp": ["#e4eff2", "#64889b", "#376d83"] },
+      "paper": { "role": "neutral", "displayName": "Family Paper", "canonical": "#f1f5ef", "tonalRamp": ["#ffffff", "#f1f5ef", "#dce6dc"] },
+      "ink": { "role": "neutral", "displayName": "House Ink", "canonical": "#1c2a23", "tonalRamp": ["#52665a", "#1c2a23", "#101a14"] },
+      "green-ink": { "role": "neutral", "displayName": "Green Ink", "canonical": "#315d4a", "tonalRamp": ["#e3f0e5", "#315d4a"] },
+      "blue-ink": { "role": "neutral", "displayName": "Blue Ink", "canonical": "#315d72", "tonalRamp": ["#e4eff2", "#315d72"] },
+      "coral-ink": { "role": "negative", "displayName": "Fruit Ink", "canonical": "#8f382d", "tonalRamp": ["#fae9e4", "#8f382d"] },
+      "harvest-ink": { "role": "neutral", "displayName": "Harvest Ink", "canonical": "#61490d", "tonalRamp": ["#f8f0d8", "#61490d"] },
+      "harvest-light": { "role": "tertiary", "displayName": "Pollen Highlight", "canonical": "#f0d47a", "tonalRamp": ["#f8f0d8", "#f0d47a"] },
+      "member-maya": { "role": "secondary", "displayName": "Maya", "canonical": "#c65a49", "tonalRamp": ["#fae9e4", "#c65a49"] },
+      "member-leo": { "role": "secondary", "displayName": "Leo", "canonical": "#397658", "tonalRamp": ["#e3f0e5", "#397658"] },
+      "member-june": { "role": "secondary", "displayName": "June", "canonical": "#376d83", "tonalRamp": ["#e4eff2", "#376d83"] },
+      "member-oscar": { "role": "secondary", "displayName": "Oscar", "canonical": "#947015", "tonalRamp": ["#f8f0d8", "#947015"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Familyboard Wordmark", "purpose": "Wordmark only; DM Sans 21px/700 as implemented." },
+      "body": { "displayName": "Workhorse Sans", "purpose": "All application copy and controls." }
+    },
+    "shadows": [
+      { "name": "floating-menu", "value": "0 12px 32px rgba(37, 51, 42, .07)", "purpose": "Mobile overflow menu." },
+      { "name": "dialog", "value": "0 24px 80px rgba(20, 42, 33, .24)", "purpose": "Modal forms only." }
+    ],
+    "motion": [
+      { "name": "menu-open", "value": "0.18s power3.out", "purpose": "Open the mobile More menu." },
+      { "name": "goal-growth", "value": "0.28s back.out(1.4) staggered", "purpose": "Show new leaves after a chore changes shared-goal progress; disabled for prefers-reduced-motion." },
+      { "name": "toast", "value": "0.2s power3.out / 0.18s power2.in", "purpose": "Acknowledge an action, then dismiss the toast." }
+    ],
+    "breakpoints": [
+      { "name": "sidebar-fold", "value": "820px" },
+      { "name": "phone", "value": "620px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "One prominent household action per view.",
+      "html": "<button class=\"fb-button-primary\">Add plan</button>",
+      "css": ".fb-button-primary { min-height: 40px; padding: 0 13px; border: 0; border-radius: 7px; background: #245c46; color: #fff; font: 700 13px 'DM Sans', sans-serif; } .fb-button-primary:focus-visible { outline: 3px solid #bb4f3d; outline-offset: 2px; }"
+    },
+    {
+      "name": "Shared Goal Garden",
+      "kind": "custom",
+      "description": "A small Three.js plant whose leaves correspond to the real shared-goal ratio, with an SVG fallback and exact textual progress.",
+      "html": "<div class=\"fb-goal\"><span>4 of 120 coins</span><img src=\"familyboard-garden.svg\" alt=\"\"></div>",
+      "css": ".fb-goal { display: grid; grid-template-columns: minmax(0, 1fr) 124px; align-items: center; gap: 12px; } .fb-goal img { width: 100%; height: auto; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A household folio that grows with shared effort",
+    "overview": "Familyboard pairs a familiar household workspace with a botanical folio used only where it carries meaning: the shared goal grows from real coin contributions. The design direction is inferred from the current product; the audience and brand personality remain to be confirmed.",
+    "keyCharacteristics": ["Clear household scope", "Action-first daily overview", "Flat data surfaces", "One data-linked garden illustration"],
+    "rules": [
+      { "name": "Garden-State Rule", "body": "Color distinguishes actions, status, people, and shared progress; do not color every control or turn the navigation into a rainbow.", "section": "colors" },
+      { "name": "Real-Goal Rule", "body": "The plant visualizes goal.current / goal.target and never substitutes for the numeric ratio.", "section": "components" }
+    ],
+    "dos": ["Do lead with today's plans and unfinished chores.", "Do preserve the SVG fallbacks and readable progress when external modules fail."],
+    "donts": ["Don't claim weather or calendar integrations that are not connected.", "Don't apply botanical styling to ordinary navigation and forms."]
+  }
+}

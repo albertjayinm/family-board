@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f1f5ef">
+    <title>familyboard | Home together</title>
+    <link rel="icon" type="image/svg+xml" href="/familyboard-icon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <section class="auth-screen" id="auth-screen" hidden>
+      <div class="auth-frame">
+        <a class="brand auth-brand" href="#" aria-label="familyboard"><span class="brand-mark" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span><span class="brand-wordmark">familyboard</span></a>
+        <div class="auth-panel">
+          <p class="eyebrow" id="auth-eyebrow">Your household board</p>
+          <h1 id="auth-title">Set up your household</h1>
+          <p class="auth-description" id="auth-description">Create a shared board for the people who make your place home.</p>
+          <form class="auth-form" id="setup-form" hidden>
+            <label class="auth-field">Household name<input name="household_name" autocomplete="organization" maxlength="60" placeholder="Our household" required></label>
+            <label class="auth-field">Your name<input name="your_name" autocomplete="name" maxlength="32" placeholder="Maya" required></label>
+            <label class="auth-field">People at home <small>Separate names with commas</small><input name="members" maxlength="240" placeholder="Maya, Leo, June, Oscar" required></label>
+            <label class="auth-field">Household passphrase <small>At least 12 characters. Share it only with your household.</small><input name="passphrase" type="password" autocomplete="new-password" minlength="12" maxlength="256" required></label>
+            <button class="button button-primary auth-submit" type="submit">Create shared board</button>
+          </form>
+          <form class="auth-form" id="login-form" hidden>
+            <div class="auth-household" id="auth-household-name"></div>
+            <label class="auth-field">Household passphrase<input name="passphrase" type="password" autocomplete="current-password" minlength="12" maxlength="256" required></label>
+            <button class="button button-primary auth-submit" type="submit">Open our board</button>
+          </form>
+          <p class="auth-notice" id="auth-notice" role="status" aria-live="polite"></p>
+          <p class="auth-footnote"><span class="sync-dot"></span> Shared with your household, stored on this computer.</p>
+        </div>
+      </div>
+      <div class="auth-side" aria-hidden="true"><img class="auth-brand-fallback" src="/familyboard-icon.svg" alt=""><p>More together.<br><em>Less to remember.</em></p><span>Calendar · Chores · Meals · Lists</span></div>
+    </section>
+
+    <div class="app-shell" hidden>
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#home" data-view="home" aria-label="familyboard home">
+          <span class="brand-mark" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span>
+          <span class="brand-wordmark">familyboard</span>
+        </a>
+        <div class="household-switcher">
+          <span class="household-glyph" data-icon="home" aria-hidden="true"></span>
+          <span class="household-copy"><strong class="household-name">Household</strong><small>Shared household board</small></span>
+          <span class="switcher-caret" data-icon="chevron-down" aria-hidden="true"></span>
+        </div>
+        <p class="nav-label">Household</p>
+        <nav class="primary-nav">
+          <button class="nav-item active" data-view="home"><span class="nav-icon" data-icon="home" aria-hidden="true"></span><span>Home</span></button>
+          <button class="nav-item" data-view="calendar"><span class="nav-icon" data-icon="calendar" aria-hidden="true"></span><span>Calendar</span><span class="nav-count" id="event-count">3</span></button>
+          <button class="nav-item" data-view="chores"><span class="nav-icon" data-icon="check" aria-hidden="true"></span><span>Chores</span><span class="nav-count coral-count" id="chore-count">2</span></button>
+          <button class="nav-item" data-view="lists"><span class="nav-icon" data-icon="list" aria-hidden="true"></span><span>Lists</span></button>
+          <button class="nav-item" data-view="meals"><span class="nav-icon" data-icon="meals" aria-hidden="true"></span><span>Meals</span></button>
+          <button class="nav-item" data-view="messages"><span class="nav-icon" data-icon="message" aria-hidden="true"></span><span>Messages</span></button>
+          <button class="nav-item" data-view="rewards"><span class="nav-icon" data-icon="reward" aria-hidden="true"></span><span>Rewards</span></button>
+          <button class="nav-item" data-view="people"><span class="nav-icon" data-icon="people" aria-hidden="true"></span><span>People</span></button>
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-family" aria-label="Household members">
+          <div class="avatar-stack" id="sidebar-avatars"></div>
+          <span id="family-label">4 people at home</span>
+        </div>
+        <div class="sidebar-footer"><span class="sync-dot" id="sync-dot"></span><span id="sync-label">Connecting…</span><button class="signout-button" type="button" data-action="logout" title="Sign out" aria-label="Sign out"><span data-icon="logout" aria-hidden="true"></span></button></div>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <div class="mobile-brand"><span class="brand-mark" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span><span class="brand-wordmark">familyboard</span></div>
+          <div class="breadcrumb"><span class="household-name">Household</span><span class="breadcrumb-slash">/</span><strong id="topbar-section">Home</strong></div>
+          <div class="topbar-actions">
+            <span class="today-label" id="topbar-date"></span>
+            <button class="icon-button notification-button" type="button" title="Household messages" aria-label="Open messages" data-view="messages"><span data-icon="mail" aria-hidden="true"></span></button>
+            <button class="profile-button" type="button" title="Switch household member" aria-label="Switch household member" data-action="switch-person"><span class="avatar avatar-maya">M</span><span class="profile-name">Maya</span><span class="switcher-caret" data-icon="chevron-down" aria-hidden="true"></span></button>
+          </div>
+        </header>
+
+        <div class="mobile-household"><span class="household-glyph" data-icon="home" aria-hidden="true"></span><strong class="household-name">Household</strong><span>·</span><span id="mobile-date"></span></div>
+
+        <section class="page-content" id="app-view" aria-live="polite"></section>
+      </main>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
+      <button class="mobile-nav-item active" data-view="home"><span data-icon="home" aria-hidden="true"></span><small>Home</small></button>
+      <button class="mobile-nav-item" data-view="calendar"><span data-icon="calendar" aria-hidden="true"></span><small>Calendar</small></button>
+      <button class="mobile-nav-item" data-view="chores"><span data-icon="check" aria-hidden="true"></span><small>Chores</small></button>
+      <button class="mobile-nav-item" data-view="lists"><span data-icon="list" aria-hidden="true"></span><small>Lists</small></button>
+      <button class="mobile-nav-item" data-view="more"><span data-icon="more" aria-hidden="true"></span><small>More</small></button>
+    </nav>
+
+    <div class="more-menu" id="more-menu" hidden aria-label="More household pages">
+      <button type="button" data-view="meals">Meals</button>
+      <button type="button" data-view="messages">Messages</button>
+      <button type="button" data-view="rewards">Rewards</button>
+      <button type="button" data-view="people">People</button>
+      <button type="button" data-action="logout">Sign out</button>
+    </div>
+
+    <dialog class="app-dialog" id="app-dialog" aria-labelledby="dialog-title">
+      <form method="dialog" class="dialog-dismiss"><button class="dialog-close" aria-label="Close dialog" value="cancel"><span data-icon="close" aria-hidden="true"></span></button></form>
+      <div id="dialog-body"></div>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

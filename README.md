@@ -2,6 +2,12 @@
 
 A shared household board that runs on one computer and syncs browsers on the same home network.
 
+## Dashboard
+
+![Familyboard dashboard showing plans, chores, dinner, and shared goal progress](dashboard.png)
+
+Shown with fictional sample household data.
+
 ## Run it
 
 Requires Python 3.9 or newer. No packages to install. SVG artwork is served locally; GSAP 3.13.0 loads from a pinned CDN for animation. If that CDN is unavailable, the artwork and all household workflows remain usable without animation. Google Fonts supplies Nunito Sans and DM Sans, with local sans-serif fallbacks.

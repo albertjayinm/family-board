@@ -21,14 +21,14 @@ Preserve the current SQLite-backed household data, passphrase sign-in, local-net
 
 ## Direction contract
 
-THESIS: Familyboard makes the shared work of a home visible as a garden that grows from real contributions; refuse a generic stack of equal dashboard cards.
+THESIS: Familyboard makes shared household work feel approachable through original, animated scenes while keeping plans and unfinished chores actionable.
 
-OWN-WORLD: Botanical folio structure translated to an operative interface: fresh leaf-green and clean paper-white surfaces with coral fruit and golden harvest marks, a clear workhorse sans, measured density, and botanical linework only where it encodes shared-goal progress.
+OWN-WORLD: User-approved illustrated family workspace: violet outer frame, white working surfaces, teal laundry and coral cooking scenes, a plum shared-goal illustration, Nunito Sans headings, and DM Sans controls. Rounded illustrated tiles are deliberate reference-led exceptions to the default restrained app treatment. Original SVG characters are not copied from the supplied references.
 
-STORY: On arrival, a household member sees today's plans and unfinished chores first, then dinner and shopping. Completing a chore changes the real coin balance and advances the shared goal; the garden visualization shows that same value, never a separate score.
+STORY: On arrival, a household member sees the selected day's plans, today's unfinished chores, tonight's meal, and the shared goal. Completing a chore persists real coins and goal progress. Original scenes loop smoothly in place, never delaying content or implying a separate score.
 
-FIRST VIEWPORT: Keep the labeled standard sidebar with the familyboard mark, household scope, and member switcher. Make “Today at a glance” the page title. Put today's events and chores in the leading column, with shopping and tonight's meal adjacent. Show the shared goal as a compact 3D plant whose growth is computed from coins earned / target, with the exact ratio and a text alternative beside it. Retain the single-action forms and mobile bottom navigation.
+FIRST VIEWPORT: Keep the labeled sidebar, household scope, member switcher, and animated SVG house mark. Lead with Today, together., a week strip, a next-plan summary, and two illustrated activity buttons. Show unfinished chores under them with Everyone, My chores, and Completed filters. Use a right column for exact shared-goal progress, plans, and the shopping link. Retain existing forms and all eight views; fold navigation on tablets and phones.
 
-FORM: Botanical folio, assigned direction, candidate 3 of 7 grounded directions; seed:50ebe8e48bd0ef28.
+FORM: Illustrated family dashboard, explicitly approved from the user's supplied references on 2026-11-02; supersedes the earlier botanical-folio exploration. Loop motion uses GSAP with pause/replay, reduced motion, visibility gating, and per-view cleanup. Static local SVG assets are the fallback.
 
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+FINISH: Verify persisted household workflows, SVG validity, continuous loop endpoints, responsive views, pause persistence, reduced motion, and animation cleanup on an isolated database. Do not modify real household data during testing.

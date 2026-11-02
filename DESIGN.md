@@ -2,36 +2,36 @@
 name: familyboard
 description: A shared household board for today's plans and everyday tasks.
 colors:
-  primary: "#245c46"
-  leaf: "#5f8c56"
-  leaf-light: "#a9c97e"
-  fruit: "#c65a49"
-  harvest: "#a47716"
-  sky: "#376d83"
-  paper: "#f1f5ef"
+  primary: "#6244bd"
+  teal: "#0b8d7b"
+  plum: "#392146"
+  coral: "#ffad93"
+  pollen: "#f6d46e"
+  sky: "#526bc1"
+  paper: "#8c78dd"
   surface: "#ffffff"
-  ink: "#1c2a23"
-  muted: "#52665a"
-  line: "#dce6dc"
-  green-ink: "#315d4a"
-  blue-ink: "#315d72"
-  coral-ink: "#8f382d"
-  harvest-ink: "#61490d"
-  harvest-light: "#f0d47a"
+  ink: "#30213f"
+  muted: "#675b71"
+  line: "#eee9f2"
+  primary-soft: "#eee8fb"
+  teal-soft: "#d6eee4"
+  blue-soft: "#e2e8ff"
+  coral-soft: "#ffe0d2"
+  harvest-ink: "#70510a"
   member-maya: "#c65a49"
   member-leo: "#397658"
   member-june: "#376d83"
   member-oscar: "#947015"
 typography:
   display:
-    fontFamily: "DM Sans, Trebuchet MS, sans-serif"
-    fontSize: "21px"
-    fontWeight: 700
+    fontFamily: "Nunito Sans, DM Sans, sans-serif"
+    fontSize: "20px"
+    fontWeight: 900
     lineHeight: 1.1
   title:
-    fontFamily: "DM Sans, Trebuchet MS, sans-serif"
-    fontSize: "24px"
-    fontWeight: 700
+    fontFamily: "Nunito Sans, DM Sans, sans-serif"
+    fontSize: "30px"
+    fontWeight: 900
     lineHeight: 1.2
   body:
     fontFamily: "DM Sans, Trebuchet MS, sans-serif"
@@ -39,8 +39,10 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
 rounded:
-  control: "7px"
-  panel: "8px"
+  control: "8px"
+  panel: "12px"
+  illustration: "16px"
+  shell: "24px"
   compact: "6px"
 spacing:
   xs: "4px"
@@ -53,14 +55,14 @@ components:
     textColor: "#ffffff"
     rounded: "{rounded.control}"
     padding: "0 13px"
-    height: "40px"
+    height: "44px"
   panel:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     rounded: "{rounded.panel}"
     padding: "16px"
   nav-active:
-    backgroundColor: "#e3f0e5"
+    backgroundColor: "#eee8fb"
     textColor: "{colors.primary}"
     rounded: "{rounded.control}"
 ---
@@ -69,107 +71,47 @@ components:
 
 ## Overview
 
-**Creative North Star: "A household folio that grows with shared effort"**
+**Creative North Star: "Shared work, illustrated together"**
 
-The interface combines a familiar household workspace with a botanical folio used only where it carries meaning: the shared goal grows from the real coin balance. Standard navigation and form controls remain recognizable and direct.
+The user approved a playful, illustration-led direction from supplied education and family-planning references. Violet framing, teal and coral activity scenes, rounded headings, and original SVG characters replace the botanical exploration. The mode remains Operate: readable dates, responsibilities, and real actions take priority over illustration.
 
-The botanical direction was assigned during this rebrand from the product's shared-goal workflow. The audience and warm-but-dependable personality are inferred from the current product, not confirmed brand preferences. Keep content factual: weather and external calendar services are not live integrations.
+## Color and Type
 
-**Key Characteristics:**
-- Product name and household scope are visible in the shell.
-- Leaf, fruit, harvest, and sky colors distinguish purpose and people.
-- One data-linked garden illustrates the shared goal; its exact ratio remains text.
-- Cards use flat surfaces and a quiet border, with no resting shadow.
+- Violet (#6244bd) identifies primary actions; its pale tint (#eee8fb) marks selection.
+- Teal (#0b8d7b) and coral (#ffad93) distinguish laundry and cooking artwork.
+- Plum (#392146) frames the shared goal; pollen (#f6d46e) carries progress and coin highlights.
+- White surfaces, ink (#30213f), muted text (#675b71), and quiet lines (#eee9f2) keep working data readable.
+- Nunito Sans supplies rounded headings and the wordmark. DM Sans supplies data, controls, and forms. Local sans-serif fallbacks remain usable if Google Fonts is blocked.
+- Screen titles are 26-30px, section headings 17-24px, working text 13-14px, and secondary labels 11-12px. Updating figures use tabular numbers.
 
-## Colors
+The reference-led violet frame and illustrated tile colors are deliberate exceptions to the default restrained app palette. Do not extend full-color treatment to every data row.
 
-The palette pairs a deep garden green with leaf, fruit, harvest, and sky accents on a pale green paper ground.
+## Layout and Controls
 
-### Primary
-- **Garden Green** (#245c46): Primary actions and selected navigation.
-- **Leaf Green** (#5f8c56): Shared-goal progress and growth visualization.
+- A 196px labeled sidebar sits beside the desktop workspace; it narrows to 176px before folding at 1050px.
+- Home has a main column and a 300px goal/agenda column. A selected-date week strip and next-plan summary precede illustrated chore and meal buttons.
+- Chores due today default to unfinished work. Everyone, My chores, and Completed filters show at most four rows, with access to the full Chores view.
+- The right column contains exact shared-goal progress, selected-day plans, and the actual shopping count.
+- Tablet navigation uses the bottom bar. At 640px, Home becomes one column with 20px margins and supporting sections below chores.
+- Standard form fields and primary controls have a 44px minimum height. Inputs retain labels, native keyboard behavior, and visible focus.
+- Illustrated tiles use 12-16px radii, normal panels 12px, controls 8px, and the desktop shell 24px. Resting sections do not float on shadows. Menus and dialogs may cast shadows.
 
-### Secondary
-- **Fruit Red** (#bb4f3d): Attention and urgent states.
-- **Harvest Gold** (#a47716): Reward balances.
-- **Clear Sky** (#376d83): Calendar/person distinction.
-- **Household Member Hues** (#c65a49, #397658, #376d83, #947015): Stable person identity marks; their pale avatar backgrounds use the matching soft family color.
+## SVG Artwork and Motion
 
-### Neutral
-- **Paper** (#f1f5ef): App ground.
-- **White Surface** (#ffffff): Panels, forms, and dialogs.
-- **House Ink** (#1c2a23): Primary text.
-- **Garden Muted** (#52665a): Secondary text; retain readable contrast.
-- **Green Ink** (#315d4a), **Blue Ink** (#315d72), **Fruit Ink** (#8f382d), and **Harvest Ink** (#61490d): Readable foreground pairs for selected states and member avatars.
-- **Pollen Highlight** (#f0d47a): Small highlight on the botanical folio.
-- **Stem Line** (#dce6dc): Quiet panel and row separation.
+All shipped illustrations are original code-authored SVGs based on household activities, not copies of reference characters. The assets are the house mark, laundry scene, cooking scene, and family picnic. Named `data-part` groups make arms, heads, fabric, vegetables, steam, leaves, roof, windows, and door independently editable.
 
-**The Garden-State Rule.** Color distinguishes action, status, people, and shared progress; do not color every control or turn the navigation into a rainbow.
+Local static SVG images render first. `artwork.js` fetches and mounts trusted local assets inline, then GSAP 3.13.0 supplies the motion layer. Three.js is not loaded by this flat illustrated design.
 
-## Typography
+- Laundry loops over 4.8 seconds, cooking over 5.6 seconds, picnic over 7.2 seconds, and the logo over 6.4 seconds.
+- Sine easing and matching endpoint transforms avoid a visible restart. Steam has two phase-offset 2.8-second cycles.
+- Hover and keyboard focus smoothly change loop speed rather than abruptly restarting poses.
+- Chore completion persists the normal coin and goal changes, then briefly accelerates visible goal/logo motion and animates a coin toward the goal.
+- Header controls pause/resume or replay visible artwork. Pause is retained for the browser session.
+- Offscreen assets, background tabs, and open dialogs pause loops. Reduced-motion mode reverts animation contexts to static artwork.
+- Disconnected view assets revert their GSAP contexts; repeated navigation must not accumulate animations.
 
-**Display Font:** DM Sans (Trebuchet MS, sans-serif), used in the familyboard wordmark.
-**Body Font:** DM Sans (Trebuchet MS, sans-serif), for all working UI.
+The illustration is expressive, not a second score. Goal amounts, percentages, shopping counts, chore ownership, and calendar plans come from persisted household state.
 
-**Character:** Friendly, sturdy, and readable. The custom house icon gives the wordmark its distinct shape while the same loaded sans keeps the product shell consistent.
+## Constraints
 
-### Hierarchy
-- **Title** (700, 24px, 1.2): Current screen name.
-- **Section** (700, 16px): Panel titles.
-- **Body** (400–600, 13–14px, 1.45–1.5): Household data, navigation, and form copy.
-- **Meta** (400–600, 12px): Dates, secondary labels, and status text.
-- **Figures** (600, tabular): Coin balances, percentages, dates, and counts.
-
-## Layout
-
-Desktop uses a labeled 244px sidebar and an equal-margin content area. The home view pairs tasks with dinner, calendar with shopping, and the shared goal with member balances. At 820px the sidebar yields to a bottom navigation; at 620px content becomes one column with 14–20px page margins. The single shared goal panel keeps its value and progress label beside the illustration.
-
-## Elevation & Depth
-
-At-rest panels are flat, separated by a one-step border. The existing soft shadow is reserved for floating menus and dialogs, never routine data panels.
-
-### Shadow Vocabulary
-- **Floating menu** (`0 12px 32px rgba(37, 51, 42, .07)`): Mobile navigation overflow menu only.
-- **Dialog** (`0 24px 80px rgba(20, 42, 33, .24)`): Modal form over a scrim.
-
-## Shapes
-
-Panels use an 8px radius; controls use 6–7px; the original familyboard icon is a compact house silhouette with four differently colored windows. Inputs stay visibly bordered and focusable.
-
-## Components
-
-### Buttons
-- **Primary:** Garden Green fill with white text, 40px minimum height, 7px radius.
-- **Secondary:** White fill with a Stem Line border.
-- **Focus:** 3px Garden Fruit outline with 2px offset; never remove keyboard focus.
-
-### Cards / Containers
-- **Panel:** White, 1px Stem Line border, 8px radius, no shadow at rest.
-- **Home layout:** Paired two-column rows on wide screens; one column on phones.
-
-### Inputs / Fields
-- **Style:** White fill, visible border, 6px radius, 42px minimum height for form fields.
-- **Focus:** Contrasting outline; preserve native labels and keyboard operation.
-
-### Navigation
-- **Desktop:** Labeled household sidebar with a pale leaf active state.
-- **Phone:** Five labeled destinations along the bottom; remaining areas in the More menu.
-- **Icons:** One outline SVG family with accessible text labels on navigation controls.
-
-### Shared Goal Garden
-- **Data:** Leaf count derives from `goal.current / goal.target`; the percentage and coin ratio stay visible in text.
-- **Rendering:** Three.js, one renderer reused across home updates; an authored SVG remains visible if WebGL or the CDN is unavailable.
-- **Motion:** GSAP animates leaf growth only after a chore changes the goal. Respect reduced motion.
-
-## Do's and Don'ts
-
-### Do:
-- **Do** lead with today's plans and unfinished chores.
-- **Do** keep amounts, progress, and member balances tied to stored household state.
-- **Do** retain the SVG logo, garden fallback, and readable ratio when external modules fail.
-- **Do** preserve the existing SQLite file and legacy session compatibility.
-
-### Don't:
-- **Don't** claim weather or Google, Outlook, or iCloud integration; they are not connected.
-- **Don't** present the 3D plant as an independent score; it only visualizes the shared goal.
-- **Don't** apply botanical styling to standard navigation, forms, or task controls.
+Preserve the SQLite database location, legacy cookie/storage compatibility, shared-passphrase authentication, and all eight application views. Never insert sample household data into the real database during UI testing. External calendars and live weather are not connected. Meal ingredient suggestions remain illustrative.

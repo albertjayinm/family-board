@@ -29,14 +29,14 @@ Inferred: a passphrase-protected household board hosted on a home computer and s
 - Existing workflows: family calendar, chores and coin rewards, shopping and custom lists, meal planning, household messages, shared goals, and member management.
 - The project is a Python standard-library HTTP server with SQLite persistence and a plain HTML/CSS/JavaScript client.
 - It is intended for a trusted home network. HTTP is not encrypted; it is not a public-hosting configuration.
-- Weather, meal ingredients, and calendar entries are sample content. Google, Outlook, and iCloud are not connected.
+- Meal ingredient suggestions are illustrative. Calendar entries are household-managed; Google, Outlook, and iCloud are not connected.
 - Preserve existing household data and the SQLite database location during this rebrand.
 
 ## Brand Commitments
 
 - Confirmed product name: `familyboard`.
-- The user requested a new logo and icon. No prior visual identity is binding.
-- Visual direction and brand personality are inferred for this pass and should be confirmed by the user later.
+- The user approved a playful, illustration-led dashboard based on supplied family-planning and education-app references, including animated SVG artwork and logo.
+- The violet frame, teal and coral activity illustrations, and rounded typography are deliberate reference-led choices. Audience details beyond household coordination remain inferred.
 
 ## Evidence on Hand
 

@@ -4,6 +4,7 @@ import json
 import tempfile
 import threading
 import unittest
+import xml.etree.ElementTree as ET
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 
@@ -49,6 +50,26 @@ class HouseholdApiTests(unittest.TestCase):
         status = response.status
         connection.close()
         return status, result, response_headers
+
+    def test_illustrated_assets_are_public_and_animation_ready(self):
+        assets = {
+            "familyboard-icon.svg": ["roof", "window", "door"],
+            "artwork-chores.svg": ["left-arm", "right-arm", "clothes"],
+            "artwork-dinner.svg": ["arm", "food", "steam-one", "steam-two"],
+            "artwork-picnic.svg": ["left-arm", "right-arm", "child-head", "leaves"],
+        }
+        for filename, parts in assets.items():
+            with self.subTest(asset=filename):
+                status, content, headers = self.request("GET", "/" + filename)
+                self.assertEqual(status, 200)
+                self.assertTrue(headers["Content-Type"].startswith("image/svg+xml"))
+                root = ET.fromstring(content)
+                self.assertEqual(root.tag, "{http://www.w3.org/2000/svg}svg")
+                for part in parts:
+                    self.assertIsNotNone(root.find(".//*[@data-part='%s']" % part))
+        status, content, _ = self.request("GET", "/artwork.js")
+        self.assertEqual(status, 200)
+        self.assertIn(b"FamilyboardArt", content)
 
     def test_household_auth_sync_conflict_and_static_file_boundary(self):
         status, result, _ = self.request("GET", "/api/status")

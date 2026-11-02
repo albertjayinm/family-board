@@ -3,19 +3,20 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f1f5ef">
+    <meta name="theme-color" content="#8c78dd">
     <title>familyboard | Home together</title>
     <link rel="icon" type="image/svg+xml" href="/familyboard-icon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Nunito+Sans:opsz,wght@6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="artwork.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
     <section class="auth-screen" id="auth-screen" hidden>
       <div class="auth-frame">
-        <a class="brand auth-brand" href="#" aria-label="familyboard"><span class="brand-mark" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span><span class="brand-wordmark">familyboard</span></a>
+        <a class="brand auth-brand" href="#" aria-label="familyboard"><span class="brand-mark" data-artwork="logo" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span><span class="brand-wordmark">familyboard</span></a>
         <div class="auth-panel">
           <p class="eyebrow" id="auth-eyebrow">Your household board</p>
           <h1 id="auth-title">Set up your household</h1>
@@ -36,13 +37,13 @@
           <p class="auth-footnote"><span class="sync-dot"></span> Shared with your household, stored on this computer.</p>
         </div>
       </div>
-      <div class="auth-side" aria-hidden="true"><img class="auth-brand-fallback" src="/familyboard-icon.svg" alt=""><p>More together.<br><em>Less to remember.</em></p><span>Calendar · Chores · Meals · Lists</span></div>
+      <div class="auth-side" aria-hidden="true"><span class="auth-illustration" data-artwork="picnic"><img src="/artwork-picnic.svg" alt=""></span><p>More together.<br><em>Less to remember.</em></p><span>Calendar · Chores · Meals · Lists</span></div>
     </section>
 
     <div class="app-shell" hidden>
       <aside class="sidebar" aria-label="Main navigation">
         <a class="brand" href="#home" data-view="home" aria-label="familyboard home">
-          <span class="brand-mark" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span>
+          <span class="brand-mark" data-artwork="logo" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span>
           <span class="brand-wordmark">familyboard</span>
         </a>
         <div class="household-switcher">
@@ -71,10 +72,14 @@
 
       <main class="main-area">
         <header class="topbar">
-          <div class="mobile-brand"><span class="brand-mark" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span><span class="brand-wordmark">familyboard</span></div>
+          <a class="mobile-brand" href="#home" data-view="home" aria-label="familyboard home"><span class="brand-mark" data-artwork="logo" aria-hidden="true"><img class="brand-fallback" src="/familyboard-icon.svg" alt=""></span><span class="brand-wordmark">familyboard</span></a>
           <div class="breadcrumb"><span class="household-name">Household</span><span class="breadcrumb-slash">/</span><strong id="topbar-section">Home</strong></div>
           <div class="topbar-actions">
             <span class="today-label" id="topbar-date"></span>
+            <div class="motion-controls" role="group" aria-label="Artwork animation">
+              <button type="button" data-motion-replay aria-label="Replay artwork" title="Replay artwork"><span data-icon="replay" aria-hidden="true"></span></button>
+              <button type="button" data-motion-toggle aria-label="Pause artwork" title="Pause artwork" aria-pressed="false"><span data-pause data-icon="pause" aria-hidden="true"></span><span data-play data-icon="play" aria-hidden="true" hidden></span></button>
+            </div>
             <button class="icon-button notification-button" type="button" title="Household messages" aria-label="Open messages" data-view="messages"><span data-icon="mail" aria-hidden="true"></span></button>
             <button class="profile-button" type="button" title="Switch household member" aria-label="Switch household member" data-action="switch-person"><span class="avatar avatar-maya">M</span><span class="profile-name">Maya</span><span class="switcher-caret" data-icon="chevron-down" aria-hidden="true"></span></button>
           </div>

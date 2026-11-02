@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 200" fill="none">
+  <path d="M24 171c24-44 97-47 146-24s135-17 172 16v37H24Z" fill="#50BBAA"/>
+  <rect x="30" y="21" width="62" height="69" rx="30" fill="#B9ECDC"/>
+  <path d="M61 22v66M32 55h58" stroke="#079182" stroke-width="5"/>
+  <path d="M216 188c-13-24-9-67 13-84l29 8c14 27 17 51 9 76Z" fill="#563681"/>
+  <path d="m212 177-12 15h40v-15m15 0 3 15h39l-15-16" fill="#EFB6C8"/>
+  <path d="M195 74c10-20 52-24 68 3l16 66-84 3Z" fill="#F8CC55"/>
+  <g data-part="left-arm"><path d="M211 83c-10 5-15 17-28 25l-26-8-7 13 40 14c17-8 26-21 33-31Z" fill="#FFCD9D"/></g>
+  <g data-part="right-arm"><path d="M254 85c11 9 10 23 11 31l-35 3 1 16 54-5c0-23-2-41-16-51Z" fill="#FFCD9D"/></g>
+  <g data-part="head"><g transform="translate(234 51) scale(.87)">
+    <path d="M-24 0C-29-35 22-42 26-9L23 24H-23Z" fill="#372347"/>
+    <ellipse cy="5" rx="22" ry="27" fill="#FFCB9C"/>
+    <path d="M-23-4C-22-32 19-33 24-7 8-7 4-11-3-18-3-2-14 3-23 4Z" fill="#372347"/>
+    <ellipse data-part="eye" cx="-8" cy="5" rx="1.9" ry="2.4" fill="#35213F"/><ellipse data-part="eye" cx="8" cy="5" rx="1.9" ry="2.4" fill="#35213F"/>
+    <path d="M-5 16q5 5 10 0" stroke="#9B5345" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="-14" cy="13" rx="4" ry="2.4" fill="#F7A58D"/><ellipse cx="14" cy="13" rx="4" ry="2.4" fill="#F7A58D"/>
+  </g></g>
+  <rect x="104" y="138" width="206" height="14" rx="6" fill="#FBE9BF"/>
+  <path d="M122 152v48m170-48v48" stroke="#FBE9BF" stroke-width="10"/>
+  <g data-part="clothes"><path d="m144 120 26-12 13 9 13-9 24 12-10 18h-56Z" fill="#B5B5F2"/><path d="m160 109 10-10 13 8 13-8 13 11-11 13h-27Z" fill="#F4F0FF"/></g>
+  <path d="M31 143h64l-7 46H39Z" fill="#E9F4D0"/>
+  <path d="M42 155v23m13-23v23m13-23v23m13-23v23" stroke="#78B895" stroke-width="4"/>
+  <path d="M42 142c-12-24 10-24 13-9 2-22 21-18 17 2 15-12 23 0 10 8" fill="#FFAE93"/>
+  <g data-part="leaves"><path d="M318 167c-25-15-21-46-5-51 8 15 7 24 5 35 12-29 34-28 31-10-2 13-15 20-31 26" fill="#D5EAA3"/></g>
+  <path d="M307 171h27l-4 24h-18Z" fill="#F7CD58"/>
+</svg>

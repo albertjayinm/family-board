@@ -23,6 +23,8 @@ const iconPaths = {
   more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
   close: '<path d="m6 6 12 12M18 6 6 18"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
+  pause: '<path d="M9 5v14M15 5v14"/>',
+  replay: '<path d="M3 10a9 9 0 1 1 2.5 8M3 4v6h6"/>',
   pencil: '<path d="m16 4 4 4M4 20l4-.8L19 8a2.1 2.1 0 0 0-3-3L5 16l-1 4Z"/>',
   trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/>',
   'arrow-left': '<path d="m14 18-6-6 6-6M8 12h12"/>',
@@ -46,10 +48,8 @@ function renderStaticIcons() {
   });
 }
 
-const visualModules = { THREE: null, gsap: null };
-let goalScene = null;
-let goalCanvas = null;
-let animateGoalOnNextRender = false;
+const visualModules = { gsap: null };
+let homeTaskFilter = 'all';
 const activeMemberStorageKey = 'familyboard-active-member';
 const legacyActiveMemberStorageKey = 'gatherday-active-member';
 
@@ -108,6 +108,7 @@ function showAuth(configured, name = '', message = '') {
     : 'Create a shared board for the people who make your place home.';
   document.querySelector('#auth-household-name').textContent = name;
   document.querySelector('#auth-notice').textContent = message;
+  window.FamilyboardArt.mount();
 }
 
 function showBoard(payload) {
@@ -313,133 +314,11 @@ function updateChrome() {
   profileButton.querySelector('.profile-name').textContent = viewer.name;
 }
 
-function renderGoalGarden(animate = false) {
-  const wrapper = root.querySelector('.goal-garden-wrap');
-  if (!wrapper || !visualModules.THREE) return;
-  const THREE = visualModules.THREE;
-  const width = Math.max(72, Math.round(wrapper.clientWidth || 104));
-  const height = Math.max(84, Math.round(wrapper.clientHeight || 112));
-  try {
-    if (!goalCanvas) {
-      goalCanvas = document.createElement('canvas');
-      goalCanvas.className = 'goal-garden';
-      goalCanvas.id = 'goal-garden';
-      goalCanvas.setAttribute('aria-hidden', 'true');
-    }
-    if (goalCanvas.parentElement !== wrapper) wrapper.appendChild(goalCanvas);
-    if (!goalScene) {
-      const renderer = new THREE.WebGLRenderer({ canvas: goalCanvas, alpha: true, antialias: true, preserveDrawingBuffer: true, powerPreference: 'low-power' });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-      renderer.outputColorSpace = THREE.SRGBColorSpace;
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(34, width / height, 0.1, 20);
-      camera.position.set(1.2, 0.9, 2.55);
-      camera.lookAt(0, 0.08, 0);
-      scene.add(new THREE.AmbientLight(0xffffff, 1.9));
-      const light = new THREE.DirectionalLight(0xffffff, 2.1);
-      light.position.set(-2, 4, 5);
-      scene.add(light);
-      goalScene = { renderer, scene, camera, plant: null, timeline: null };
-    }
-    const { renderer, scene, camera } = goalScene;
-    renderer.setSize(width, height, false);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    goalScene.timeline?.kill();
-    if (goalScene.plant) {
-      scene.remove(goalScene.plant);
-      goalScene.plant.traverse((object) => {
-        object.geometry?.dispose();
-        if (Array.isArray(object.material)) object.material.forEach((material) => material.dispose());
-        else object.material?.dispose();
-      });
-    }
-
-    const plant = new THREE.Group();
-    const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x52704a, roughness: 0.82 });
-    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.07, 0.8, 7), trunkMaterial);
-    trunk.position.y = -0.12;
-    plant.add(trunk);
-    const branchPositions = [[-0.16, 0.13, -0.08], [0.16, 0.2, 0.08], [-0.18, -0.08, 0.04], [0.18, -0.02, -0.06]];
-    branchPositions.forEach(([x, y, z], index) => {
-      const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.032, 0.44, 5), trunkMaterial);
-      branch.position.set(x * 0.6, y, z);
-      branch.rotation.z = index % 2 ? -0.74 : 0.74;
-      plant.add(branch);
-    });
-    const ratio = state.goal.target > 0 ? Math.max(0, Math.min(1, state.goal.current / state.goal.target)) : 0;
-    const leafSpots = [
-      [-0.27, 0.34, 0.02], [0.24, 0.38, 0.02], [-0.33, 0.13, 0.04], [0.32, 0.18, 0.03],
-      [-0.25, -0.05, 0.08], [0.24, 0.01, 0.08], [-0.16, 0.49, -0.02], [0.15, 0.52, -0.01],
-      [-0.39, 0.28, -0.02], [0.39, 0.3, -0.02], [-0.16, 0.2, 0.11], [0.17, 0.25, 0.11],
-    ];
-    const leafCount = ratio > 0 ? Math.max(1, Math.ceil(ratio * leafSpots.length)) : 0;
-    const leafMaterials = [
-      new THREE.MeshStandardMaterial({ color: 0x5f8c56, roughness: 0.68 }),
-      new THREE.MeshStandardMaterial({ color: 0x88aa67, roughness: 0.72 }),
-    ];
-    const leaves = [];
-    leafSpots.slice(0, leafCount).forEach(([x, y, z], index) => {
-      const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.085, 8, 6), leafMaterials[index % leafMaterials.length]);
-      leaf.position.set(x, y, z);
-      leaf.scale.set(0.72, 1.22, 0.55);
-      if (animate && visualModules.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        leaf.scale.setScalar(0.01);
-      }
-      plant.add(leaf);
-      leaves.push(leaf);
-    });
-    const soil = new THREE.Mesh(new THREE.CylinderGeometry(0.29, 0.29, 0.055, 16), new THREE.MeshStandardMaterial({ color: 0xd4e3cf, roughness: 0.9 }));
-    soil.position.y = -0.54;
-    plant.add(soil);
-    if (ratio >= 1) {
-      const fruit = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 6), new THREE.MeshStandardMaterial({ color: 0xc65a49, roughness: 0.52 }));
-      fruit.position.set(0.04, 0.49, 0.15);
-      fruit.scale.setScalar(animate && visualModules.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0.01 : 1);
-      plant.add(fruit);
-      leaves.push(fruit);
-    }
-    plant.rotation.y = -0.16;
-    plant.scale.setScalar(1.18);
-    scene.add(plant);
-    goalScene.plant = plant;
-    const draw = () => renderer.render(scene, camera);
-    if (animate && visualModules.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && leaves.length) {
-      const timeline = visualModules.gsap.timeline({ defaults: { duration: 0.28, ease: 'back.out(1.4)' }, onUpdate: draw });
-      leaves.forEach((leaf, index) => timeline.to(leaf.scale, { x: 0.72, y: 1.22, z: 0.55 }, index * 0.035));
-      goalScene.timeline = timeline;
-    } else {
-      draw();
-    }
-    goalCanvas.classList.add('is-ready');
-    wrapper.querySelector('.goal-garden-fallback')?.classList.add('is-hidden');
-  } catch (error) {
-    goalCanvas?.classList.remove('is-ready');
-    console.warn('Familyboard garden could not start; showing the SVG illustration.', error);
-  }
-}
-
-function resizeGoalGarden() {
-  if (!goalScene || !goalCanvas?.parentElement) return;
-  const width = Math.max(72, Math.round(goalCanvas.parentElement.clientWidth || 104));
-  const height = Math.max(84, Math.round(goalCanvas.parentElement.clientHeight || 112));
-  goalScene.renderer.setSize(width, height, false);
-  goalScene.camera.aspect = width / height;
-  goalScene.camera.updateProjectionMatrix();
-  goalScene.renderer.render(goalScene.scene, goalScene.camera);
-}
-
 function loadVisualModules() {
-  const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
   const GSAP_URL = 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/index.js';
-  Promise.all([
-    import(THREE_URL).catch(() => null),
-    import(GSAP_URL).catch(() => null),
-  ]).then(([threeModule, gsapModule]) => {
-    visualModules.THREE = threeModule;
+  import(GSAP_URL).catch(() => null).then((gsapModule) => {
     visualModules.gsap = gsapModule?.gsap || gsapModule?.default?.gsap || null;
-    renderGoalGarden(false);
+    window.FamilyboardArt.setGSAP(visualModules.gsap);
   });
 }
 
@@ -455,9 +334,9 @@ function todayEvents() {
   return state.events.filter((event) => event.date === dateKey(today)).sort((a, b) => a.time.localeCompare(b.time));
 }
 
-function renderEvents(events, emptyText = 'Nothing on the calendar yet.') {
+function renderEvents(events, emptyText = 'Nothing on the calendar yet.', showDate = false) {
   if (!events.length) return `<div class="empty-state">${emptyText}</div>`;
-  return `<div class="event-list">${events.map((event) => `<div class="event-row"><time class="event-time">${formatTime(event.time)}</time><span class="event-marker ${escapeHtml(event.tone)}"></span><div class="event-copy"><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(event.person || 'Everyone')}</small></div></div>`).join('')}</div>`;
+  return `<div class="event-list">${events.map((event) => `<div class="event-row"><time class="event-time">${formatTime(event.time)}${showDate ? `<small>${friendlyDate(dateFromKey(event.date), { month: 'short', day: 'numeric' })}</small>` : ''}</time><span class="event-marker ${escapeHtml(event.tone)}"></span><div class="event-copy"><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(event.person || 'Everyone')}</small></div></div>`).join('')}</div>`;
 }
 
 function renderTasks(tasks, limit = Infinity) {
@@ -484,25 +363,29 @@ function rewardTotal() {
 }
 
 function renderHome() {
-  const remainingTasks = state.tasks.filter((task) => task.date === dateKey(today) && !task.done);
+  const dayTasks = state.tasks.filter((task) => task.date === dateKey(today));
+  const remainingTasks = dayTasks.filter((task) => !task.done);
+  const visibleTasks = dayTasks.filter((task) => homeTaskFilter === 'done' ? task.done : !task.done && (homeTaskFilter !== 'mine' || task.assignee === activeMemberId));
   const shopping = state.lists.find((list) => list.id === 'shopping') ?? state.lists[0];
   const meal = state.meals.find((entry) => entry.date === dateKey(today));
-  const mealName = meal?.name || 'Choose tonight’s dinner';
-  const eventCount = todayEvents().length;
-  const doneCount = state.tasks.filter((task) => task.date === dateKey(today) && task.done).length;
-  const totalCount = state.tasks.filter((task) => task.date === dateKey(today)).length;
+  const days = Array.from({ length: 7 }, (_, index) => shiftDate(mondayOf(dateFromKey(selectedDate)), index));
+  const events = state.events.filter((event) => event.date === selectedDate).sort((first, second) => first.time.localeCompare(second.time));
   const goalRatio = state.goal.target > 0 ? Math.max(0, Math.min(1, state.goal.current / state.goal.target)) : 0;
   const goalPercent = Math.round(goalRatio * 100);
-  const daySummary = `${friendlyDate(today, { weekday: 'long', month: 'long', day: 'numeric' })} · ${eventCount} ${eventCount === 1 ? 'plan' : 'plans'} · ${remainingTasks.length} ${remainingTasks.length === 1 ? 'chore' : 'chores'} left`;
-  return `${pageHeading('', 'Today at a glance', daySummary, addButton('Add plan', 'open-event', '+'))}
-    <div class="dashboard-grid">
-      <section class="panel"><div class="panel-header"><div><h2 class="panel-title">Today’s rhythm</h2><p class="panel-kicker">${doneCount} of ${totalCount} little things done</p></div><button class="panel-link" data-view="chores" type="button">See chores</button></div>${renderTasks(state.tasks.filter((task) => task.date === dateKey(today)), 4)}</section>
-      <section class="panel"><div class="panel-header"><div><h2 class="panel-title">Coming up</h2><p class="panel-kicker">The next few moments together</p></div><button class="panel-link" data-view="calendar" type="button">Open calendar</button></div>${renderEvents(todayEvents())}</section>
-      <section class="dinner-card"><img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=900&q=82" alt="Fresh vegetables for tonight’s meal" loading="lazy"><div class="dinner-content"><div><p class="dinner-label">Dinner tonight${meal?.cook ? ` · Cooking: ${escapeHtml(meal.cook)}` : ''}</p><h2>${escapeHtml(mealName)}</h2><p class="dinner-meta">A good reason to gather.</p></div><button class="button dinner-edit" type="button" data-action="edit-meal" data-date="${dateKey(today)}">${meal?.name ? 'Edit dinner' : 'Plan dinner'}</button></div></section>
-      <section class="panel"><div class="panel-header"><div><h2 class="panel-title">Shopping</h2><p class="panel-kicker">A shared list, always at hand</p></div><button class="panel-link" data-view="lists" type="button">Full list</button></div>${renderShoppingList(shopping, 4)}${quickAdd(shopping.id)}</section>
-      <section class="panel goal-panel"><div class="panel-header"><div><h2 class="panel-title">${escapeHtml(state.goal.name)}</h2><p class="panel-kicker">A shared goal grows with every chore</p></div><span class="coin-balance">${rewardTotal()} coins</span></div><div class="goal-content"><div class="goal-box"><div class="goal-line"><span>${state.goal.current} of ${state.goal.target} coins</span><strong>${goalPercent}%</strong></div><div class="progress-track"><div class="progress-fill" style="width:${goalPercent}%"></div></div></div><div class="goal-garden-wrap" aria-hidden="true"><img class="goal-garden-fallback" src="/familyboard-garden.svg" alt=""></div></div></section>
-      <section class="panel"><div class="panel-header"><div><h2 class="panel-title">Around the table</h2><p class="panel-kicker">Household coin balances</p></div><button class="panel-link" data-view="rewards" type="button">Rewards</button></div><div class="mini-stats">${state.members.map((person) => `<div class="mini-stat"><strong>${person.coins}</strong><span>${escapeHtml(person.name)}</span></div>`).join('')}</div></section>
-    </div>`;
+  const daySummary = `${friendlyDate(dateFromKey(selectedDate))} · ${events.length} ${events.length === 1 ? 'plan' : 'plans'}`;
+  const week = days.map((date) => {
+    const key = dateKey(date);
+    const hasPlan = state.events.some((event) => event.date === key);
+    return `<button class="home-day ${key === selectedDate ? 'selected' : ''}" type="button" data-action="home-day" data-date="${key}" aria-label="${friendlyDate(date)}" aria-pressed="${key === selectedDate}"><small>${friendlyDate(date, { weekday: 'short' })}</small><strong>${date.getDate()}</strong><i class="${hasPlan ? '' : 'empty'}"></i></button>`;
+  }).join('');
+  return `<div class="home-board"><div class="home-main">${pageHeading('', 'Today, together.', daySummary, addButton('Add plan', 'open-event', '+'))}
+    <div class="home-week" aria-label="Household week">${week}</div>
+    <div class="home-next"><strong>Next up</strong><span>${events[0] ? `${formatTime(events[0].time)} · ${escapeHtml(events[0].title)} · ${escapeHtml(events[0].person || 'Everyone')}` : 'A clear day. Make it your own.'}</span><button class="tiny-icon" data-view="calendar" aria-label="Open calendar">${iconSvg('arrow-right')}</button></div>
+    <div class="home-features"><button class="home-feature teamwork" data-view="chores"><span class="feature-copy"><h2>Teamwork time</h2><small>${remainingTasks.length} little ${remainingTasks.length === 1 ? 'job' : 'jobs'}, shared together</small></span><span class="feature-arrow">${iconSvg('arrow-right')}</span>${window.FamilyboardArt.markup('chores')}</button><button class="home-feature supper" type="button" data-action="edit-meal" data-date="${dateKey(today)}"><span class="feature-copy"><h2>Dinner tonight</h2><small>${escapeHtml(meal?.name || 'Choose something delicious')}${meal?.cook ? ` · ${escapeHtml(meal.cook)}` : ''}</small></span><span class="feature-arrow">${iconSvg('arrow-right')}</span>${window.FamilyboardArt.markup('dinner')}</button></div>
+    <section class="home-chores"><div class="home-section-heading"><div><h2>Small jobs, big help</h2><p class="panel-kicker">Due today</p></div><button class="panel-link" type="button" data-action="open-task">${iconSvg('plus')}Add chore</button></div><div class="home-filters" role="group" aria-label="Chore filter">${[['all', 'Everyone'], ['mine', 'My chores'], ['done', 'Completed']].map(([value, label]) => `<button type="button" data-action="home-filter" data-filter="${value}" aria-pressed="${homeTaskFilter === value}" class="${homeTaskFilter === value ? 'selected' : ''}">${label}</button>`).join('')}</div>${visibleTasks.length ? renderTasks(visibleTasks, 4) : `<div class="empty-state">${homeTaskFilter === 'done' ? 'No completed chores yet.' : homeTaskFilter === 'mine' ? 'Your chores are all done.' : 'All caught up. Enjoy the breathing room.'}</div>`}<div class="home-task-footer"><span>${dayTasks.filter((task) => task.done).length} done together today</span><button class="panel-link" data-view="chores">All chores ${iconSvg('arrow-right')}</button></div></section></div>
+    <aside class="home-side"><section class="home-goal"><div class="home-goal-heading"><h2>${escapeHtml(state.goal.name)}</h2><p>A little closer to something together.</p></div>${window.FamilyboardArt.markup('picnic')}<div class="home-goal-data"><div class="goal-line"><span>${state.goal.current} / ${state.goal.target} coins</span><strong>${goalPercent}%</strong></div><div class="progress-track" role="progressbar" aria-label="Shared goal" aria-valuenow="${goalPercent}" aria-valuemin="0" aria-valuemax="100"><div class="progress-fill" style="width:${goalPercent}%"></div></div><small>${Math.max(0, state.goal.target - state.goal.current)} coins to go</small></div></section>
+    <section class="home-agenda"><div class="home-section-heading"><h2>${selectedDate === dateKey(today) ? 'Today’s plans' : friendlyDate(dateFromKey(selectedDate), { weekday: 'long' }) + ' plans'}</h2><button class="panel-link" data-action="open-event" aria-label="Add calendar plan">${iconSvg('plus')}</button></div>${renderEvents(events, 'Nothing planned for this day.')}</section>
+    <button class="home-shopping" data-view="lists">${iconSvg('list')}<span><strong>Pick up on the way</strong><small>${shopping?.items.filter((item) => !item.done).length || 0} things on the shopping list</small></span>${iconSvg('arrow-right')}</button></aside></div>`;
 }
 
 function renderCalendar() {
@@ -575,8 +458,7 @@ function render() {
   updateChrome();
   const templates = { home: renderHome, calendar: renderCalendar, chores: renderChores, lists: renderLists, meals: renderMeals, messages: renderMessages, rewards: renderRewards, people: renderPeople };
   root.innerHTML = templates[currentView]();
-  renderGoalGarden(animateGoalOnNextRender);
-  animateGoalOnNextRender = false;
+  return window.FamilyboardArt.mount();
 }
 
 function memberOptions(selected = activeMemberId || state.members[0]?.id) {
@@ -633,9 +515,10 @@ function toggleTask(id) {
   person.coins = Math.max(0, person.coins + (task.done ? task.points : -task.points));
   if (task.done) state.goal.current = Math.min(state.goal.target, state.goal.current + task.points);
   else state.goal.current = Math.max(0, state.goal.current - task.points);
-  animateGoalOnNextRender = true;
+  const sourceRect = root.querySelector(`[data-action="toggle-task"][data-id="${CSS.escape(id)}"]`)?.closest('.task-row')?.getBoundingClientRect();
   saveState();
-  render();
+  const artworkReady = render();
+  if (task.done) artworkReady.then(() => window.FamilyboardArt.celebrate(task.points, sourceRect));
   showToast(task.done ? `${person.name} earned ${task.points} coins.` : 'Chore moved back to the list.');
 }
 
@@ -664,6 +547,8 @@ function handleClick(event) {
   }
   if (action === 'select-list') { activeListId = id; render(); }
   if (action === 'select-day') { selectedDate = date; render(); }
+  if (action === 'home-day') { selectedDate = date; render(); }
+  if (action === 'home-filter') { homeTaskFilter = button.dataset.filter; render(); }
   if (action === 'week-back' || action === 'week-forward') {
     calendarAnchor = shiftDate(calendarAnchor, action === 'week-back' ? -7 : 7);
     selectedDate = dateKey(mondayOf(calendarAnchor));
@@ -827,7 +712,6 @@ document.addEventListener('submit', handleSubmit);
 document.querySelector('#setup-form').addEventListener('submit', handleAuthSubmit);
 document.querySelector('#login-form').addEventListener('submit', handleAuthSubmit);
 renderStaticIcons();
-window.addEventListener('resize', resizeGoalGarden);
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) refreshBoard();
 });

@@ -1,8 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <path d="M7 29.5 32 8l25 21.5h-7V56H14V29.5H7Z" fill="#245C46"/>
-  <path d="m15 29.5 17-14.6 17 14.6V54H15V29.5Z" fill="#F1F5EF"/>
-  <rect x="20" y="31" width="9" height="8" rx="1.5" fill="#5F8C56"/>
-  <rect x="35" y="31" width="9" height="8" rx="1.5" fill="#D9B34C"/>
-  <rect x="20" y="43" width="9" height="8" rx="1.5" fill="#376D83"/>
-  <path d="M35 54V43h9v11" fill="#C65A49"/>
+  <g data-part="building">
+    <path d="M14 28h36v28H14Z" fill="#6244BD"/>
+    <path d="M17 29h30v24H17Z" fill="#F7F4FF"/>
+    <rect data-part="window" x="20" y="31" width="9" height="8" rx="1.5" fill="#0B8D7B"/>
+    <rect data-part="window" x="35" y="31" width="9" height="8" rx="1.5" fill="#F6D46E"/>
+    <rect data-part="window" x="20" y="43" width="9" height="8" rx="1.5" fill="#8198EB"/>
+    <path data-part="door" d="M35 54V43h9v11Z" fill="#FFAD93"/>
+  </g>
+  <g data-part="roof"><path d="M7 29.5 32 8l25 21.5h-10L32 16 17 29.5H7Z" fill="#6244BD"/></g>
 </svg>
